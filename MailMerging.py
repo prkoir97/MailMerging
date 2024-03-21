@@ -77,8 +77,9 @@ def main():
         "Letter_Date_Time",
     ]
 
-    # Initialize a list to store all output data
+    # Initialize a list to store all output data and letter data
     output_data = []
+    letter_data = []
 
     # Loop through files in the input directory
     for filename in os.listdir(input_path):
@@ -172,25 +173,24 @@ def main():
                 today_date_str = datetime.now().strftime("%Y%m%d")
                 letter_file_name = f"{mrn}_{'Disenrolled' if disenrollment_date and disenrollment_date < pd.to_datetime('now') else 'Enrolled'}_{today_date_str}.txt"
 
-                # Generate personalized letter
-                letter = generate_letter(
-                    letter_template,
+                # Append letter data to the list
+                letter_data.append(
                     {
-                        "Date": datetime.now().strftime("%Y-%m-%d"),
-                        "Recipient_Name": recipient_name,
-                        "Address": address,
-                        "City": city,
-                        "State": state,
-                        "Zip": zipcode,
-                        "Months_Enrolled": str(months_enrolled),
-                    },
+                        "file_name": letter_file_name,
+                        "content": generate_letter(
+                            letter_template,
+                            {
+                                "Date": datetime.now().strftime("%Y-%m-%d"),
+                                "Recipient_Name": recipient_name,
+                                "Address": address,
+                                "City": city,
+                                "State": state,
+                                "Zip": zipcode,
+                                "Months_Enrolled": str(months_enrolled),
+                            },
+                        ),
+                    }
                 )
-
-                # Write the letter to a file
-                with open(
-                    os.path.join(output_letter_path, letter_file_name), "w"
-                ) as f:
-                    f.write(letter)
 
                 # Append data to output data list
                 output_data.append(
@@ -214,6 +214,12 @@ def main():
         output_array = np.array(output_data)
         print("Output Array Size:", output_array.shape)
         output_df = pd.DataFrame(output_array, columns=output_csv_header)
+
+        # Write letters to files
+        for letter_info in letter_data:
+            with open(os.path.join(output_letter_path, letter_info["file_name"]), "w") as f:
+                f.write(letter_info["content"])
+
         output_df.to_csv(output_file_path, sep="\t", index=False)
     else:
         print("No data found to create DataFrame.")
@@ -223,3 +229,4 @@ def main():
 # Execute the main function if this script is run directly
 if __name__ == "__main__":
     main()
+

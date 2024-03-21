@@ -1,6 +1,6 @@
 import os
 import paramiko
-from config import password_key
+from config import pass_word, user_name
 
 def upload_to_sftp(local_file_path, remote_file_path, hostname, username, password):
     transport = paramiko.Transport((hostname, 22))
@@ -15,8 +15,8 @@ def upload_to_sftp(local_file_path, remote_file_path, hostname, username, passwo
 def main():
     # Define SFTP server details
     hostname = "mailmerge.couchdrop.io"
-    username = "prkoir97"
-    password = (password_key)
+    username = (user_name)
+    password = (pass_word)
     remote_directory = "../MailMerging"
 
     # Define local directories containing output letters and records
@@ -34,7 +34,7 @@ def main():
             print(f"Uploaded {filename} to SFTP server.")
 
     # Upload the TSV file from the records directory
-    tsv_file = "Enrollments_20240320152235.tsv"
+    tsv_file = "Enrollments_20240320235206.tsv"
     local_file_path = os.path.join(records_directory, tsv_file)
     remote_file_path = os.path.join(remote_directory, tsv_file)
 
