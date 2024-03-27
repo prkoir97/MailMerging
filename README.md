@@ -17,7 +17,10 @@ This script contains the core functionality of the mail merging application. It 
 This script handles the creation of a PostgreSQL database table to store mail merging data and inserts data from the output records file into the table.
 
 #### `STFPFileUpload.py`
-This script facilitates the uploading of generated letters and records to an SFTP server. It includes the `upload_to_sftp()` function to upload files and the `main()` function to execute the upload process.
+This script facilitates the uploading of generated letters and records to an SFTP server.
+
+#### `UploadToAzureBlob.py`
+This script facilitates the uploading of generated letters and records to an Azure blob container.
 
 ### Dependencies
 - Python 3.x
@@ -41,7 +44,3 @@ This script facilitates the uploading of generated letters and records to an SFT
 - `datetime`: Date and time manipulation.
 - `psycopg2`: PostgreSQL adapter for Python.
 
-*** 
-
-### Note
-Make sure to adjust file paths and database connection details as per your environment before running the scripts.
